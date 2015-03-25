@@ -17,17 +17,18 @@ public class Driver {
 		String output = parser.get("output");
 		String tmpdir = parser.get("tmpdir");
 
-		getJobFeatureVector(input, tmpdir + "/job_feature_vector");
+		// getJobFeatureVector(input, tmpdir + "/job_feature_vector");
 
-		String jobFeatureVector = loadJobFeatureVector(tmpdir
-				+ "/job_feature_vector");
+		// String jobFeatureVector = loadJobFeatureVector(tmpdir
+		// 		+ "/job_feature_vector");
 
-		System.out.println("Job feature vector: " + jobFeatureVector);
+		// System.out.println("Job feature vector: " + jobFeatureVector);
 
 		getHashtagFeatureVector(input, tmpdir + "/feature_vector");
 
-		getHashtagSimilarities(jobFeatureVector, tmpdir + "/feature_vector",
-				output);
+                getIndex(tmpdir + "/feature_vector", tmpdir + "/index");
+
+		getHashtagSimilarities(tmpdir + "/index", output);
 	}
 
 	/**
@@ -89,6 +90,23 @@ public class Driver {
 		job.run();
 	}
 
+
+	/**
+	 * Generate Inverted Index for all hash tag features.
+	 * 
+	 * @param input
+	 * @param output
+	 * @throws Exception
+	 */
+	private static void getIndex(String input, String output)
+			throws Exception {
+		Optimizedjob job = new Optimizedjob(new Configuration(), input, output,
+				"Get inverted indices for all hashtag feature vectors");
+		job.setClasses(IndexMapper.class, IndexReducer.class, null);
+		job.setMapOutputClasses(Text.class, Text.class);
+		job.run();
+	}
+
 	/**
 	 * When we have feature vector for both #job and all other hashtags, we can
 	 * use them to compute inner products. The problem is how to share the
@@ -97,14 +115,13 @@ public class Driver {
 	 * is dispatched to all mappers at the beginning and used to setup the
 	 * mappers.
 	 * 
-	 * @param jobFeatureVector
 	 * @param input
 	 * @param output
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 * @throws InterruptedException
 	 */
-	private static void getHashtagSimilarities(String jobFeatureVector,
+	/*private static void getHashtagSimilarities(String jobFeatureVector,
 			String input, String output) throws IOException,
 			ClassNotFoundException, InterruptedException {
 		// Share the feature vector of #job to all mappers.
@@ -115,6 +132,16 @@ public class Driver {
 				"Get similarities between #job and all other hashtags");
 		job.setClasses(SimilarityMapper.class, null, null);
 		job.setMapOutputClasses(IntWritable.class, Text.class);
+		job.run();
+	}*/
+	private static void getHashtagSimilarities(String input, String output) throws IOException,
+			ClassNotFoundException, InterruptedException {
+		Configuration conf = new Configuration();
+		
+		Optimizedjob job = new Optimizedjob(conf, input, output,
+				"Get similarities between all hashtag pairs");
+		job.setClasses(SimilarityMapper.class, SimilarityReducer.class, null);
+		job.setMapOutputClasses(Text.class, IntWritable.class);
 		job.run();
 	}
 }

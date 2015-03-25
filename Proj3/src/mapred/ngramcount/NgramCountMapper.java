@@ -16,9 +16,13 @@ public class NgramCountMapper extends Mapper<LongWritable, Text, Text, NullWrita
 			throws IOException, InterruptedException {
 		String line = value.toString();
 		String[] words = Tokenizer.tokenize(line);
-
-		for (String word : words)
-			context.write(new Text(word), NullWritable.get());
-
+		int l = words.length;
+		for (int i = 0; i < l - Driver.n; i++) {
+			StringBuilder sb = new StringBuilder();
+			for (int j = 0; j < Driver.n; j++) {
+				sb.append(words[i]);
+			}
+			context.write(new Text(sb.toString()), NullWritable.get());
+		}
 	}
 }

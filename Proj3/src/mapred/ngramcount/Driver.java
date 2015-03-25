@@ -8,13 +8,13 @@ import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 
 public class Driver {
-
+	public static int n = 1;
 	public static void main(String args[]) throws Exception {
 		SimpleParser parser = new SimpleParser(args);
 
 		String input = parser.get("input");
 		String output = parser.get("output");
-
+		n = Integer.valueOf(parser.get("n"));
 		getJobFeatureVector(input, output);
 
 	}

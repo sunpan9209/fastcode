@@ -8,7 +8,7 @@ import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 
 public class Driver {
-	public static int n = 1;
+	public static int n = 3;
 	public static void main(String args[]) throws Exception {
 		SimpleParser parser = new SimpleParser(args);
 

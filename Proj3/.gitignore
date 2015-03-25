@@ -2,3 +2,6 @@ build/
 data/ 
 output/
 .DS_Store
+.classpath
+bin/
+.project

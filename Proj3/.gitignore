@@ -8,3 +8,4 @@ bin/
 *.jar
 MANIFEST.MF
 build.num
+tmp/

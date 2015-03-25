@@ -17,7 +17,7 @@ public class NgramCountMapper extends Mapper<LongWritable, Text, Text, NullWrita
 		String line = value.toString();
 		String[] words = Tokenizer.tokenize(line);
 		int l = words.length;
-		for (int i = 0; i < l - Driver.n; i++) {
+		for (int i = 0; i < l - Driver.n + 1; i++) {
 			StringBuilder sb = new StringBuilder();
 			for (int j = 0; j < Driver.n; j++) {
 				sb.append(words[i]);

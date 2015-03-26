@@ -3,7 +3,6 @@ package mapred.hashtagsim;
 import java.io.IOException;
 
 import mapred.job.Optimizedjob;
-import mapred.util.FileUtil;
 import mapred.util.SimpleParser;
 
 import org.apache.hadoop.conf.Configuration;
@@ -19,61 +18,12 @@ public class Driver {
 		String output = parser.get("output");
 		String tmpdir = parser.get("tmpdir");
 
-//		getJobFeatureVector(input, tmpdir + "/job_feature_vector");
-//
-//		String jobFeatureVector = loadJobFeatureVector(tmpdir
-//				+ "/job_feature_vector");
-//
-//		System.out.println("Job feature vector: " + jobFeatureVector);
-
 		getHashtagFeatureVector(input, tmpdir + "/feature_vector");
 		getHashtagSimilarities(tmpdir + "/feature_vector", tmpdir + "/index");
 		finalresult(tmpdir + "/index", output);
-//		getHashtagSimilarities(jobFeatureVector, tmpdir + "/feature_vector",
-//				output);
+
 	}
 
-	/**
-	 * Computes the word cooccurrence counts for hashtag #job
-	 * 
-	 * @param input
-	 *            The directory of input files. It can be local directory, such
-	 *            as "data/", "/home/ubuntu/data/", or Amazon S3 directory, such
-	 *            as "s3n://myawesomedata/"
-	 * @param output
-	 *            Same format as input
-	 * @throws IOException
-	 * @throws ClassNotFoundException
-	 * @throws InterruptedException
-	 */
-	private static void getJobFeatureVector(String input, String output)
-			throws IOException, ClassNotFoundException, InterruptedException {
-		Optimizedjob job = new Optimizedjob(new Configuration(), input, output,
-				"Get feature vector for hashtag #Job");
-
-		job.setClasses(JobMapper.class, JobReducer.class, null);
-		job.setMapOutputClasses(Text.class, Text.class);
-		job.setReduceJobs(1);
-
-		job.run();
-	}
-
-	/**
-	 * Loads the computed word cooccurrence count for hashtag #job from disk.
-	 * 
-	 * @param dir
-	 * @return
-	 * @throws IOException
-	 */
-	private static String loadJobFeatureVector(String dir) throws IOException {
-		// Since there'll be only 1 reducer that process the key "#job", result
-		// will be saved in the first result file, i.e., part-r-00000
-		String job_featureVector = FileUtil.load(dir + "/part-r-00000");
-
-		// The feature vector looks like "#job word1:count1;word2:count2;..."
-		String featureVector = job_featureVector.split("\\s+", 2)[1];
-		return featureVector;
-	}
 
 	/**
 	 * Same as getJobFeatureVector, but this one actually computes feature

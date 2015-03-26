@@ -1,29 +1,44 @@
 package mapred.hashtagsim;
 
 import java.io.IOException;
-
-
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
-import org.apache.hadoop.mapreduce.Reducer.Context;
 
 public class SimilarityReducer extends Reducer<Text, Text, Text, IntWritable> {
-		
-		public void reduce(Text key, Iterable<Text> value, Context context) 
-				throws IOException, InterruptedException {
-			for (Text word1 : value) {
-				String[] buffer1 = word1.toString().split(":", 2);
-				int count = Integer.valueOf(buffer1[1]);
-				for (Text word2 : value) {
-					String[] buffer2 = word2.toString().split(":", 2);
-					int count2 = Integer.valueOf(buffer2[1]);
-					if (buffer1[0].compareTo(buffer2[0]) < 0) {
-						context.write(new Text(buffer1[0] + buffer2[0]), new IntWritable(count * count2));
-					}
-				}
+
+	public void reduce(Text key, Iterable<Text> value, Context context) 
+			throws IOException, InterruptedException {
+
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		Iterator<Text> iter = value.iterator();
+		while (iter.hasNext()) {
+			String[] buffer1 = iter.next().toString().split(":", 2);
+			map.put(buffer1[0], Integer.valueOf(buffer1[1]));
+		}
+//		for (Text word1 : value) {
+//			String[] buffer1 = word1.toString().split(":", 2);
+//			map.put(buffer1[0], Integer.valueOf(buffer1[1]));
+//		}
+		ArrayList<String> keys = new ArrayList<String>(map.keySet());
+		String outputstr = new String();
+		for (int i = 0; i < keys.size(); i ++) {
+			for (int j = i + 1; j < keys.size(); j ++) {
+				String tag1 = keys.get(i);
+				String tag2 = keys.get(j);
+				Integer sum = map.get(tag1) * map.get(tag2);
+				if (tag1.compareTo(tag2) > 0) {
+					outputstr = tag2 + "," + tag1;
+				}		
+				else if (tag1.compareTo(tag2) < 0) {
+					outputstr = tag1 + "," + tag2;
+				}	
+				context.write(new Text(outputstr), new IntWritable(sum));
 			}
-		
+		}
 	}
 }

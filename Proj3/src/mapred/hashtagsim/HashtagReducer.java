@@ -12,7 +12,6 @@ public class HashtagReducer extends Reducer<Text, Text, Text, Text> {
 	protected void reduce(Text key, Iterable<Text> value,
 			Context context)
 			throws IOException, InterruptedException {		
-		
 		Map<String, Integer> counts = new HashMap<String, Integer>();
 		for (Text word : value) {
 			String w = word.toString();
@@ -24,14 +23,9 @@ public class HashtagReducer extends Reducer<Text, Text, Text, Text> {
 		}
 		
 		/*
-		 * We're serializing the word cooccurrence count as a string of the following form:
-		 * 
-		 * word1:count1;word2:count2;...;wordN:countN;
+		 * We use a new form of word tag: count
 		 */
-		StringBuilder builder = new StringBuilder();
 		for (Map.Entry<String, Integer> e : counts.entrySet()) 
-			builder.append(e.getKey() + ":" + e.getValue() + ";");
-		
-		context.write(key, new Text(builder.toString()));
+			context.write(new Text(e.getKey()), new Text(key + ":" + e.getValue()));
 	}
 }

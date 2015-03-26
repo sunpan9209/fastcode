@@ -1,9 +1,11 @@
 package mapred.hashtagsim;
 
 import java.io.IOException;
+
 import mapred.job.Optimizedjob;
 import mapred.util.FileUtil;
 import mapred.util.SimpleParser;
+
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
@@ -17,18 +19,18 @@ public class Driver {
 		String output = parser.get("output");
 		String tmpdir = parser.get("tmpdir");
 
-		// getJobFeatureVector(input, tmpdir + "/job_feature_vector");
-
-		// String jobFeatureVector = loadJobFeatureVector(tmpdir
-		// 		+ "/job_feature_vector");
-
-		// System.out.println("Job feature vector: " + jobFeatureVector);
+//		getJobFeatureVector(input, tmpdir + "/job_feature_vector");
+//
+//		String jobFeatureVector = loadJobFeatureVector(tmpdir
+//				+ "/job_feature_vector");
+//
+//		System.out.println("Job feature vector: " + jobFeatureVector);
 
 		getHashtagFeatureVector(input, tmpdir + "/feature_vector");
-
-                getIndex(tmpdir + "/feature_vector", tmpdir + "/index");
-
-		getHashtagSimilarities(tmpdir + "/index", output);
+		getHashtagSimilarities(tmpdir + "/feature_vector", tmpdir + "/index");
+		finalresult(tmpdir + "/index", output);
+//		getHashtagSimilarities(jobFeatureVector, tmpdir + "/feature_vector",
+//				output);
 	}
 
 	/**
@@ -90,23 +92,6 @@ public class Driver {
 		job.run();
 	}
 
-
-	/**
-	 * Generate Inverted Index for all hash tag features.
-	 * 
-	 * @param input
-	 * @param output
-	 * @throws Exception
-	 */
-	private static void getIndex(String input, String output)
-			throws Exception {
-		Optimizedjob job = new Optimizedjob(new Configuration(), input, output,
-				"Get inverted indices for all hashtag feature vectors");
-		job.setClasses(IndexMapper.class, IndexReducer.class, null);
-		job.setMapOutputClasses(Text.class, Text.class);
-		job.run();
-	}
-
 	/**
 	 * When we have feature vector for both #job and all other hashtags, we can
 	 * use them to compute inner products. The problem is how to share the
@@ -115,32 +100,37 @@ public class Driver {
 	 * is dispatched to all mappers at the beginning and used to setup the
 	 * mappers.
 	 * 
+	 * @param jobFeatureVector
 	 * @param input
 	 * @param output
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 * @throws InterruptedException
 	 */
-	/*private static void getHashtagSimilarities(String jobFeatureVector,
+
+	
+	private static void getHashtagSimilarities(
 			String input, String output) throws IOException,
 			ClassNotFoundException, InterruptedException {
-		// Share the feature vector of #job to all mappers.
-		Configuration conf = new Configuration();
-		conf.set("jobFeatureVector", jobFeatureVector);
 		
-		Optimizedjob job = new Optimizedjob(conf, input, output,
-				"Get similarities between #job and all other hashtags");
-		job.setClasses(SimilarityMapper.class, null, null);
-		job.setMapOutputClasses(IntWritable.class, Text.class);
-		job.run();
-	}*/
-	private static void getHashtagSimilarities(String input, String output) throws IOException,
-			ClassNotFoundException, InterruptedException {
 		Configuration conf = new Configuration();
 		
 		Optimizedjob job = new Optimizedjob(conf, input, output,
-				"Get similarities between all hashtag pairs");
+				"Get similarities among all other hashtags");
 		job.setClasses(SimilarityMapper.class, SimilarityReducer.class, null);
+		job.setMapOutputClasses(Text.class, Text.class);
+		job.run();
+	}
+	
+	private static void finalresult(
+			String input, String output) throws IOException,
+			ClassNotFoundException, InterruptedException {
+		
+		Configuration conf = new Configuration();
+		
+		Optimizedjob job = new Optimizedjob(conf, input, output,
+				"Get final result");
+		job.setClasses(FinalMapper.class, FinalReducer.class, null);
 		job.setMapOutputClasses(Text.class, IntWritable.class);
 		job.run();
 	}

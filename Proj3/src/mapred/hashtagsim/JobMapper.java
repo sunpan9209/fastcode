@@ -16,17 +16,18 @@ public class JobMapper extends Mapper<LongWritable, Text, Text, Text> {
 			throws IOException, InterruptedException {
 		String line = value.toString();
 		String[] words = Tokenizer.tokenize(line);
-
 		/*
 		 * Iterate all words, find out hastag #job, then iterate all other non-hashtag 
 		 * words and map out.
 		 */
 		for (String word : words) 
-			if (word.equals("#job")) 
-				for (String word2 : words)
-					if (word2.startsWith("#")==false)
-						context.write(new Text("#job"), new Text(word2));
-		
+			if (word.startsWith("#")) {
+				for (String word2 : words) {
+					if (!word2.startsWith("#")) {
+						context.write(new Text(word), new Text(word2));
+					}
+				}
+			}
 		
 	}
 }

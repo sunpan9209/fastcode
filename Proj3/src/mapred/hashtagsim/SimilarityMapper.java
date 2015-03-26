@@ -29,19 +29,6 @@ public class SimilarityMapper extends Mapper<LongWritable, Text, Text, Text> {
 	}
 
 	/**
-	 * This function is ran before the mapper actually starts processing the
-	 * records, so we can use it to setup the job feature vector.
-	 * 
-	 * Loads the feature vector for hashtag #job into mapper's memory
-	 */
-	@Override
-	protected void setup(Context context) {
-		String jobFeatureVector = context.getConfiguration().get(
-				"jobFeatureVector");
-		jobFeatures = parseFeatureVector(jobFeatureVector);		
-	}
-
-	/**
 	 * De-serialize the feature vector into a map
 	 * 
 	 * @param featureVector

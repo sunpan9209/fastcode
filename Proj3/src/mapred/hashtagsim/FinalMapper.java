@@ -8,6 +8,7 @@ import org.apache.hadoop.mapreduce.Mapper;
 
 public class FinalMapper extends Mapper<LongWritable, Text, Text, IntWritable> {
 	@Override
+	// We just output the output of mapper.
 	protected void map(LongWritable key, Text value,
 			Context context)
 			throws IOException, InterruptedException {

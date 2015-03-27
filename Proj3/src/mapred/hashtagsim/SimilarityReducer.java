@@ -20,16 +20,12 @@ public class SimilarityReducer extends Reducer<Text, Text, Text, IntWritable> {
 			String[] buffer1 = iter.next().toString().split(":", 2);
 			map.put(buffer1[0], Integer.valueOf(buffer1[1]));
 		}
-//		for (Text word1 : value) {
-//			String[] buffer1 = word1.toString().split(":", 2);
-//			map.put(buffer1[0], Integer.valueOf(buffer1[1]));
-//		}
-		ArrayList<String> keys = new ArrayList<String>(map.keySet());
+		ArrayList<String> tags = new ArrayList<String>(map.keySet());
 		String outputstr = new String();
-		for (int i = 0; i < keys.size(); i ++) {
-			for (int j = i + 1; j < keys.size(); j ++) {
-				String tag1 = keys.get(i);
-				String tag2 = keys.get(j);
+		for (int i = 0; i < tags.size(); i ++) {
+			for (int j = i + 1; j < tags.size(); j ++) {
+				String tag1 = tags.get(i);
+				String tag2 = tags.get(j);
 				Integer sum = map.get(tag1) * map.get(tag2);
 				if (tag1.compareTo(tag2) > 0) {
 					outputstr = tag2 + "," + tag1;

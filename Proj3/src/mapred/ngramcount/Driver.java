@@ -7,6 +7,7 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 
+// This is almost the same to the last time except we parse the number of n and store it using a static int
 public class Driver {
 	public static int n = 1;
 	public static void main(String args[]) throws Exception {
@@ -18,7 +19,7 @@ public class Driver {
 		getJobFeatureVector(input, output);
 
 	}
-
+	
 	private static void getJobFeatureVector(String input, String output)
 			throws IOException, ClassNotFoundException, InterruptedException {
 		Optimizedjob job = new Optimizedjob(new Configuration(), input, output,

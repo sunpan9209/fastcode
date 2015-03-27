@@ -1,7 +1,6 @@
 package mapred.hashtagsim;
 
 import java.io.IOException;
-
 import mapred.job.Optimizedjob;
 import mapred.util.SimpleParser;
 
@@ -26,8 +25,9 @@ public class Driver {
 
 
 	/**
-	 * Same as getJobFeatureVector, but this one actually computes feature
-	 * vector for all hashtags.
+	 * This is the first MapReduce job, it computes all the feature
+	 * vector for all hashtags and output the number. Then we output each vector
+	 * word as key and the tag their count as value.
 	 * 
 	 * @param input
 	 * @param output
@@ -43,14 +43,12 @@ public class Driver {
 	}
 
 	/**
-	 * When we have feature vector for both #job and all other hashtags, we can
-	 * use them to compute inner products. The problem is how to share the
-	 * feature vector for #job with all the mappers. Here we're using the
-	 * "Configuration" as the sharing mechanism, since the configuration object
-	 * is dispatched to all mappers at the beginning and used to setup the
-	 * mappers.
+	 * When we have feature vector for all hashtags, we output the Reducer in the last getHashtagFeatureVector
+	 * as Mapper and we use each vector as key and output the time that each two pair of tags appear 
+	 * together in the Reducer. For each feature word, we output the tag sequentially. To save time, we use a 
+	 * HashMap to accelerate the speed.
 	 * 
-	 * @param jobFeatureVector
+	 * 
 	 * @param input
 	 * @param output
 	 * @throws IOException
@@ -72,6 +70,16 @@ public class Driver {
 		job.run();
 	}
 	
+	
+	/**
+	 * This is the final MapReduce job, we change the type of mapper and reducer to IntWritable and LongWritable
+	 * to accelerate the speed. In the Reducer, we just add the count together.
+	 * @param input
+	 * @param output
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 * @throws InterruptedException
+	 */
 	private static void finalresult(
 			String input, String output) throws IOException,
 			ClassNotFoundException, InterruptedException {

@@ -1,10 +1,12 @@
 package mapred.ngramcount;
 
 import java.io.IOException;
+
 import mapred.job.Optimizedjob;
 import mapred.util.SimpleParser;
+
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.io.NullWritable;
+import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 
 // This is almost the same to the last time except we parse the number of n and store it using a static int
@@ -26,7 +28,7 @@ public class Driver {
 				"Compute NGram Count");
 
 		job.setClasses(NgramCountMapper.class, NgramCountReducer.class, null);
-		job.setMapOutputClasses(Text.class, NullWritable.class);
+		job.setMapOutputClasses(Text.class, IntWritable.class);
 
 		job.run();
 	}	

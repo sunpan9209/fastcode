@@ -4,13 +4,13 @@ import java.io.IOException;
 
 import mapred.util.Tokenizer;
 
+import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
-import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 
-public class NgramCountMapper extends Mapper<LongWritable, Text, Text, NullWritable> {
-
+public class NgramCountMapper extends Mapper<LongWritable, Text, Text, IntWritable> {
+	private static IntWritable one = new IntWritable(1);
 	@Override
 	protected void map(LongWritable key, Text value, Context context)
 			throws IOException, InterruptedException {
@@ -20,10 +20,10 @@ public class NgramCountMapper extends Mapper<LongWritable, Text, Text, NullWrita
 		for (int i = 0; i < l - Driver.n + 1; i++) {
 			StringBuilder sb = new StringBuilder();
 			sb.append(words[i]);
-			for (int j = i + 1; j < Driver.n; j++) {
-				sb.append(" " + words[j]);
+			for (int j = 1; j < Driver.n; j++) {
+				sb.append(" " + words[i + j]);
 			}
-			context.write(new Text(sb.toString()), NullWritable.get());
+			context.write(new Text(sb.toString()), one);
 		}
 	}
 }

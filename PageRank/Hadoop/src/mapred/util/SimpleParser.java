@@ -33,31 +33,33 @@ public class SimpleParser {
 			line = parser.parse(options, args);
 			value = line.getOptionValue(option);
 			if (value == null)
-				throw new ParseException("Option value for " + option + " is not found.");
+				throw new ParseException("Option value for " + option
+						+ " is not found.");
 		} catch (ParseException e) {
 			System.err.println("Option value for " + option + " is not found.");
 			System.exit(1);
-			//e.printStackTrace();
+			// e.printStackTrace();
 		}
-		
+
 		return value;
 	}
-	
+
 	public Integer getInt(String option) {
 		return Integer.parseInt(get(option));
 	}
-	
+
 	public double getDouble(String option) {
 		return Double.parseDouble(get(option));
 	}
-	
+
 	public Boolean getBoolean(String option) {
 		return Boolean.parseBoolean(get(option));
 	}
 
 	class IgnoreUnrecognizedOptionParser extends BasicParser {
 		@Override
-		protected void processOption(final String arg, @SuppressWarnings("rawtypes") final ListIterator iter)
+		protected void processOption(final String arg,
+				@SuppressWarnings("rawtypes") final ListIterator iter)
 				throws ParseException {
 			boolean hasOption = getOptions().hasOption(arg);
 			if (hasOption) {
@@ -66,13 +68,14 @@ public class SimpleParser {
 		}
 
 	}
+
 	/**
 	 * Example usage
 	 */
 	public static void main(String[] args) {
 		String option = "abc";
-		System.out.println("The option value for " + option + " is " + new SimpleParser(args).get(option));
+		System.out.println("The option value for " + option + " is "
+				+ new SimpleParser(args).get(option));
 	}
 
 }
-

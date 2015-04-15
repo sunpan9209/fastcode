@@ -18,10 +18,10 @@ public class Driver {
 	private static NumberFormat nf = new DecimalFormat("00");
 
 	public static void main(String args[]) throws Exception {
-//		SimpleParser parser = new SimpleParser(args);
-		//TODO input and output
-//		String input = parser.get("input");
-//		String output = parser.get("output");
+		// SimpleParser parser = new SimpleParser(args);
+		// TODO input and output
+		// String input = parser.get("input");
+		// String output = parser.get("output");
 		runParsing("../data/pages", "../output/ranking/iter00");
 
 		String lastResultPath = null;

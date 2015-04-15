@@ -38,6 +38,7 @@ public class Optimizedjob extends Job {
 
 	private int reduceJobs;
 
+	@SuppressWarnings("deprecation")
 	public Optimizedjob(Configuration conf, String input, String output,
 			String jobName) throws IOException {
 		super(conf);
@@ -62,8 +63,8 @@ public class Optimizedjob extends Job {
 		int reducer_capacity = cluster_status.getMaxReduceTasks();
 
 		// IO format
-	//	setInputFormatClass(TextInputFormat.class);
-	//	setOutputFormatClass(TextOutputFormat.class);
+		// setInputFormatClass(TextInputFormat.class);
+		// setOutputFormatClass(TextOutputFormat.class);
 
 		// Input file/dir
 		for (String input : inputs)
@@ -115,6 +116,7 @@ public class Optimizedjob extends Job {
 
 	/**
 	 * Sets the output format of map step. Usually it's Text, or IntWritable.
+	 * 
 	 * @param mapOutputKeyClass
 	 * @param mapOutputValueClass
 	 */
@@ -123,19 +125,20 @@ public class Optimizedjob extends Job {
 		setMapOutputKeyClass(mapOutputKeyClass);
 		setMapOutputValueClass(mapOutputValueClass);
 	}
-	
-//	@SuppressWarnings({ "unchecked", "rawtypes" })
-//	public void setInputFormat(Class<?> inputClass) {
-//		setInputFormatClass((Class<? extends InputFormat>) inputClass);
-//	}
-//	
-//	@SuppressWarnings({ "unchecked", "rawtypes" })
-//	public void setOutputFormat(Class<?> outputClass) {
-//		setOutputFormatClass((Class<? extends OutputFormat>) outputClass);
-//	}
+
+	// @SuppressWarnings({ "unchecked", "rawtypes" })
+	// public void setInputFormat(Class<?> inputClass) {
+	// setInputFormatClass((Class<? extends InputFormat>) inputClass);
+	// }
+	//
+	// @SuppressWarnings({ "unchecked", "rawtypes" })
+	// public void setOutputFormat(Class<?> outputClass) {
+	// setOutputFormatClass((Class<? extends OutputFormat>) outputClass);
+	// }
 
 	/**
-	 * Runs the job. 
+	 * Runs the job.
+	 * 
 	 * @throws IOException
 	 * @throws InterruptedException
 	 * @throws ClassNotFoundException

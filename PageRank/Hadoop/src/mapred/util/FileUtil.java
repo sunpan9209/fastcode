@@ -17,7 +17,7 @@ import mapred.filesystem.CommonFileOperations;
 public class FileUtil {
 	static Configuration conf;
 	static FileSystem fs;
-	
+
 	public static void setConfiguration(Configuration c) {
 		conf = c;
 		try {
@@ -26,7 +26,7 @@ public class FileUtil {
 			e.printStackTrace();
 		}
 	}
-	
+
 	static {
 		setConfiguration(new Configuration());
 	}
@@ -59,32 +59,59 @@ public class FileUtil {
 
 	// Saves to temp dir
 	public static void saveInt(int i, String name) {
-		try {saveTmp(Integer.toString(i), name);} catch (IOException e) {e.printStackTrace();}
+		try {
+			saveTmp(Integer.toString(i), name);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
-	
+
 	// Loads from temp dir
 	public static Integer loadInt(String name) {
-		try {return Integer.parseInt(loadTmp(name));} catch (IOException e) {e.printStackTrace();return null;}
+		try {
+			return Integer.parseInt(loadTmp(name));
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
-	
+
 	// Saves to temp dir
 	public static void saveLong(long i, String name) {
-		try {saveTmp(Long.toString(i), name);} catch (IOException e) {e.printStackTrace();}
+		try {
+			saveTmp(Long.toString(i), name);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
-	
+
 	// Loads from temp dir
 	public static Long loadLong(String name) {
-		try {return Long.parseLong(loadTmp(name));} catch (IOException e) {e.printStackTrace();return null;}
+		try {
+			return Long.parseLong(loadTmp(name));
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
-	
+
 	// Saves to temp dir
 	public static void saveDouble(Double i, String name) {
-		try {saveTmp(Double.toString(i), name);} catch (IOException e) {e.printStackTrace();}
+		try {
+			saveTmp(Double.toString(i), name);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
-	
+
 	// Loads from temp dir
 	public static Double loadDouble(String name) {
-		try {return Double.parseDouble(loadTmp(name));} catch (IOException e) {e.printStackTrace();return null;}
+		try {
+			return Double.parseDouble(loadTmp(name));
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	// Loads all lines
@@ -105,7 +132,6 @@ public class FileUtil {
 	public static String getTmpDir() {
 		return conf.get("hadoop.tmp.dir");
 	}
-	
 
 	public static FileSystem getFS() {
 		return fs;

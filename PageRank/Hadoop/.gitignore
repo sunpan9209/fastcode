@@ -5,7 +5,6 @@ output/
 .classpath
 bin/
 .project
-*.jar
 MANIFEST.MF
 build.num
 tmp/

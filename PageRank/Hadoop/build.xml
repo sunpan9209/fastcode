@@ -19,11 +19,7 @@
 
 
   <path id="classpath">
-    <pathelement location="lib/hadoop-core-1.0.3.jar"/>
-    <pathelement location="lib/commons-cli-1.2.jar"/>
-    <pathelement location="lib/org-apache-commons-logging.jar"/>
-    <pathelement location="lib/org.apache.commons.io-2.0.1.jar"/>
-    <pathelement location="lib/log4j-1.2.16.jar"/>
+    <pathelement location="lib/*.jar"/>
   </path>
 
 

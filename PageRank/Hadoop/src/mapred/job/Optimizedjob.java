@@ -11,8 +11,10 @@ import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.mapred.ClusterStatus;
 import org.apache.hadoop.mapred.JobClient;
 import org.apache.hadoop.mapred.JobConf;
+//import org.apache.hadoop.mapreduce.InputFormat;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
+//import org.apache.hadoop.mapreduce.OutputFormat;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
@@ -60,9 +62,8 @@ public class Optimizedjob extends Job {
 		int reducer_capacity = cluster_status.getMaxReduceTasks();
 
 		// IO format
-		//TODO io format
-		setInputFormatClass(TextInputFormat.class);
-		setOutputFormatClass(TextOutputFormat.class);
+	//	setInputFormatClass(TextInputFormat.class);
+	//	setOutputFormatClass(TextOutputFormat.class);
 
 		// Input file/dir
 		for (String input : inputs)
@@ -122,6 +123,16 @@ public class Optimizedjob extends Job {
 		setMapOutputKeyClass(mapOutputKeyClass);
 		setMapOutputValueClass(mapOutputValueClass);
 	}
+	
+//	@SuppressWarnings({ "unchecked", "rawtypes" })
+//	public void setInputFormat(Class<?> inputClass) {
+//		setInputFormatClass((Class<? extends InputFormat>) inputClass);
+//	}
+//	
+//	@SuppressWarnings({ "unchecked", "rawtypes" })
+//	public void setOutputFormat(Class<?> outputClass) {
+//		setOutputFormatClass((Class<? extends OutputFormat>) outputClass);
+//	}
 
 	/**
 	 * Runs the job. 

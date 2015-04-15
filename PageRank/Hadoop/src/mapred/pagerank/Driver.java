@@ -7,6 +7,8 @@ import java.text.NumberFormat;
 import mapred.job.Optimizedjob;
 //import mapred.util.SimpleParser;
 
+import mapred.util.SimpleParser;
+
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.io.FloatWritable;
 import org.apache.hadoop.io.Text;
@@ -18,19 +20,19 @@ public class Driver {
 	private static NumberFormat nf = new DecimalFormat("00");
 
 	public static void main(String args[]) throws Exception {
-		// SimpleParser parser = new SimpleParser(args);
-		// TODO input and output
-		// String input = parser.get("input");
-		// String output = parser.get("output");
-		runParsing("../data/pages", "../output/ranking/iter00");
+		SimpleParser parser = new SimpleParser(args);
+		String input = parser.get("input");
+		String output = parser.get("output");
+		int n = Integer.valueOf(parser.get("n"));
+		runParsing(input, output + "/iter00");
 
 		String lastResultPath = null;
-		for (int runs = 0; runs < 5; runs++) {
-			String inPath = "../output/ranking/iter" + nf.format(runs);
-			lastResultPath = "../output/ranking/iter" + nf.format(runs + 1);
+		for (int runs = 0; runs < n; runs++) {
+			String inPath = output + "/iter" + nf.format(runs);
+			lastResultPath = output + "/iter" + nf.format(runs + 1);
 			runCalculation(inPath, lastResultPath);
 		}
-		runOrdering(lastResultPath, "../output/result");
+		runOrdering(lastResultPath, output + "/result");
 	}
 
 	private static void runParsing(String input, String output)

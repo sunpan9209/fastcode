@@ -109,7 +109,7 @@ public class XmlInputFormat extends TextInputFormat {
 
 		@Override
 		public void close() throws IOException {
-			fsin.close();
+			if (fsin != null) fsin.close();
 		}
 
 		private boolean readUntilMatch(byte[] match, boolean withinBlock)

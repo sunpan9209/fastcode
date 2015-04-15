@@ -14,7 +14,7 @@ public class Parser extends BasicParser {
 	}
 
 	@Override
-	protected void processOption(final String arg, final ListIterator iter)
+	protected void processOption(final String arg, @SuppressWarnings("rawtypes") final ListIterator iter)
 			throws ParseException {
 		boolean hasOption = getOptions().hasOption(arg);
 

@@ -60,6 +60,7 @@ public class Optimizedjob extends Job {
 		int reducer_capacity = cluster_status.getMaxReduceTasks();
 
 		// IO format
+		//TODO io format
 		setInputFormatClass(TextInputFormat.class);
 		setOutputFormatClass(TextOutputFormat.class);
 

@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.net.URI;
+//import java.net.URI;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -204,8 +204,7 @@ public class CommonFileOperations {
 	}
 
 	public static void copyFromDir(String key, String value) {
-		// TODO Auto-generated method stub
-		
+		//TODO copyFromDir
 	}
 
 	/**

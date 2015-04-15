@@ -17,6 +17,10 @@ public class Entry {
 		else if (program.equals("ngramcount"))
 			mapred.ngramcount.Driver.main(args);
 		
+		else if (program.equals("pagerank"))
+			//TODO main
+			mapred.ngramcount.Driver.main(args);
+		
 		else {
 			System.out.println("Unknown program!");
 			System.exit(1);
